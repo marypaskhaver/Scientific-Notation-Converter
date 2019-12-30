@@ -56,10 +56,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let num: Double = (base * pow(10.0, exponent).removeZerosFromEnd())
+        let num: Double = (base * pow(10.0, exponent))
         
-        decimalTF.text = num.removeZerosFromEnd().toString()
-        decimalTF.sizeToFit()
+        decimalTF.text = num.toString()
     }
     
     
@@ -135,7 +134,7 @@ extension Double {
         return Double(String(formatter.string(from: number) ?? "0"))!
     }
     
-    func toString(decimal: Int = 9) -> String {
+    func toString(decimal: Int = 16) -> String {
         let value = decimal < 0 ? 0 : decimal
         var string = String(format: "%.\(value)f", self)
 
