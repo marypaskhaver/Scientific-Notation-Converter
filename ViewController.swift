@@ -25,7 +25,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func exponentEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 {
+            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
+            Double(exponentTF.text!)! > 16 || Double(exponentTF.text!)! < -16 {
             
             return
         }
@@ -36,7 +37,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func baseEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 {
+            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
+            Double(exponentTF.text!)! > 16 || Double(exponentTF.text!)! < -16 {
             
             return
         }
@@ -57,6 +59,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
         let num: Double = (base * pow(10.0, exponent))
+        
         
         if exponent < 16 && exponent > -16 {
             decimalTF.text = String(num)
