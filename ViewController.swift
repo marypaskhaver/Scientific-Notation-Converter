@@ -25,7 +25,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func exponentEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt {
+            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 {
             
             return
         }
@@ -36,7 +36,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func baseEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt {
+            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 {
             
             return
         }
@@ -58,23 +58,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         let num: Double = (base * pow(10.0, exponent))
         
-        print("a")
-        print(String(num))
-        print(num.toString())
-        print("b")
-        
-        
         if exponent < 16 && exponent > -16 {
-            print("foo")
             decimalTF.text = String(num)
         } else {
-            print("bar")
             decimalTF.text = num.toString()
         }
         
-        if (decimalTF.text!.count > 16) {
-            let num = round(num * 10000000000000000) / 10000000000000000
-            decimalTF.text = num.toString()
+        // If the number in decimalTF has a .0 at the end, drop the .0
+        if (Double(decimalTF.text!)!.truncatingRemainder(dividingBy: 1) == 0) {
+            decimalTF.text = String((decimalTF.text!.dropLast()))
+            decimalTF.text = String((decimalTF.text!.dropLast()))
         }
     
     }
@@ -153,7 +146,7 @@ extension Double {
     }
     
     // Prints out full number, not Apple scientific notation (ex: 4e+16)
-    func toString(decimal: Int = 16) -> String {
+    func toString(decimal: Int = 17) -> String {
         let value = decimal < 0 ? 0 : decimal
         var string = String(format: "%.\(value)f", self)
 
