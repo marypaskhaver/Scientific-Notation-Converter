@@ -56,7 +56,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let num: Double = round(base * pow(10.0, exponent).removeZerosFromEnd().truncate(places: 8))
+        let num: Double = round(base * pow(10.0, exponent).removeZerosFromEnd())
         
         decimalTF.text = num.toString()
         decimalTF.sizeToFit()
@@ -146,11 +146,7 @@ extension Double {
         
         return string
     }
-    
-    func truncate(places: Int) -> Double {
-        return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
-    }
-    
+
 }
 
 extension String {
