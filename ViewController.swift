@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var exponentTF: UITextField!
     @IBOutlet weak var clearButton: UIButton!
     
-    @IBAction func decimalEntered(_ sender: Any) {
+    @IBAction func decimalEntered(_ sender: UITextField) {
         if decimalTF.text!.isEmpty || decimalTF.text!.countInstances(of: ".") > 1 {
             return
         }
@@ -22,7 +22,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         convertDecimalToSciNo()
     }
     
-    @IBAction func exponentEntered(_ sender: Any) {
+    @IBAction func exponentEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
             !exponentTF.text!.isInt {
@@ -33,7 +33,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         convertSciNoToDecimal()
     }
     
-    @IBAction func baseEntered(_ sender: Any) {
+    @IBAction func baseEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
             !exponentTF.text!.isInt {
