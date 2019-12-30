@@ -46,7 +46,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func convertSciNoToDecimal() {
         let baseString: String = baseTF.text!
-        let base: Double = round(100000000.0 * Double(baseString)! / 100000000.0)
+        let base: Double = Double(baseString)!
         
         let exponentString: String = exponentTF.text!
         let exponent: Double! = Double(exponentString)
@@ -56,14 +56,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let num: Double = base * pow(10.0, exponent).removeZerosFromEnd()
-
+        let num: Double = round(base * pow(10.0, exponent).removeZerosFromEnd().truncate(places: 8))
+        
         decimalTF.text = num.toString()
         decimalTF.sizeToFit()
     }
     
+    
     func convertDecimalToSciNo() {
-        print("Calling!!")
         let stringDecimal: String = decimalTF.text!
         var decimal: Double = Double(stringDecimal)!
         
@@ -81,7 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         } else if decimal > 1 {
             while decimal > 10 {
-                decimal /= 10
+                decimal /= 10.0
                 exponent += 1
             }
         }
@@ -120,7 +120,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
     
@@ -131,7 +130,8 @@ extension Double {
         let formatter = NumberFormatter()
         let number = NSNumber(value: self)
         formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 16 //maximum digits in Double after dot (maximum precision)
+        formatter.maximumFractionDigits = 16
+        
         return Double(String(formatter.string(from: number) ?? "0"))!
     }
     
@@ -143,7 +143,12 @@ extension Double {
             if string.last == "." { string = String(string.dropLast()); break}
             string = String(string.dropLast())
         }
+        
         return string
+    }
+    
+    func truncate(places: Int) -> Double {
+        return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
     }
     
 }
@@ -154,10 +159,12 @@ extension String {
         assert(!stringToFind.isEmpty)
         var count = 0
         var searchRange: Range<String.Index>?
+        
         while let foundRange = range(of: stringToFind, options: [], range: searchRange) {
             count += 1
             searchRange = Range(uncheckedBounds: (lower: foundRange.upperBound, upper: endIndex))
         }
+        
         return count
     }
     
