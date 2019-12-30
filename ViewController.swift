@@ -58,7 +58,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         let num: Double = (base * pow(10.0, exponent))
         
-        decimalTF.text = num.toString()
+        print("a")
+        print(String(num))
+        print(num.toString())
+        print("b")
+        
+        
+        if exponent < 16 && exponent > -16 {
+            print("foo")
+            decimalTF.text = String(num)
+        } else {
+            print("bar")
+            decimalTF.text = num.toString()
+        }
+        
+        if (decimalTF.text!.count > 16) {
+            let num = round(num * 10000000000000000) / 10000000000000000
+            decimalTF.text = num.toString()
+        }
+    
     }
     
     
@@ -134,6 +152,7 @@ extension Double {
         return Double(String(formatter.string(from: number) ?? "0"))!
     }
     
+    // Prints out full number, not Apple scientific notation (ex: 4e+16)
     func toString(decimal: Int = 16) -> String {
         let value = decimal < 0 ? 0 : decimal
         var string = String(format: "%.\(value)f", self)
