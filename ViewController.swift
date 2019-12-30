@@ -56,9 +56,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let num: Double = round(base * pow(10.0, exponent).removeZerosFromEnd())
+        let num: Double = (base * pow(10.0, exponent).removeZerosFromEnd())
         
-        decimalTF.text = num.toString()
+        decimalTF.text = num.removeZerosFromEnd().toString()
         decimalTF.sizeToFit()
     }
     
