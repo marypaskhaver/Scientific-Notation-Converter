@@ -105,7 +105,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         baseTF.inputView =  DecimalKeypad(target: baseTF)
         exponentTF.inputView = DecimalKeypadWithMinus(target: exponentTF)
         
-//        numberFormatter = NumberFormatter()
         numberFormatter.maximumFractionDigits = 16
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         
