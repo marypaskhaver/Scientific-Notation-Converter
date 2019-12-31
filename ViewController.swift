@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var baseTF: UITextField!
     @IBOutlet weak var exponentTF: UITextField!
     @IBOutlet weak var clearButton: UIButton!
+    var numberFormatter: NumberFormatter = NumberFormatter()
     
     @IBAction func decimalEntered(_ sender: UITextField) {
         if decimalTF.text!.isEmpty || decimalTF.text!.countInstances(of: ".") > 1 {
@@ -40,7 +41,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
             Double(exponentTF.text!)! > 16 || Double(exponentTF.text!)! < -16 {
             
-            
             return
         }
         
@@ -56,16 +56,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         let num: Double = (base * pow(10.0, exponent))
         
-        if exponent == 0 {
-            decimalTF.text = baseString
-            return
-        }
-        
         // Make sure small numbers are printed without scientific notation and with max. 16 fraction digits
-        let numberFormatter = NumberFormatter()
-        numberFormatter.maximumFractionDigits = 16
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let numString = numberFormatter.string(from: NSNumber(value: num))
+        
         decimalTF.text = numString!
     }
     
@@ -92,11 +85,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-        // Remove trailing zeros
-        decimal = decimal.removeZerosFromEnd()
-        
+        let decimalString = numberFormatter.string(from: NSNumber(value: decimal))
+
         // Set text in scientific notation label to 'converted' number
-        baseTF.text = String(decimal)
+        baseTF.text = decimalString
         exponentTF.text = String(exponent)
     }
     
@@ -112,6 +104,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         decimalTF.inputView =  DecimalKeypad(target: decimalTF)
         baseTF.inputView =  DecimalKeypad(target: baseTF)
         exponentTF.inputView = DecimalKeypadWithMinus(target: exponentTF)
+        
+//        numberFormatter = NumberFormatter()
+        numberFormatter.maximumFractionDigits = 16
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -129,18 +125,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-}
-
-extension Double {
-    func removeZerosFromEnd() -> Double {
-        let formatter = NumberFormatter()
-        let number = NSNumber(value: self)
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 16
-        
-        return Double(String(formatter.string(from: number) ?? "0"))!
-    }
-
 }
 
 extension String {
