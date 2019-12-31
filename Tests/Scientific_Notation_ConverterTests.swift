@@ -45,13 +45,25 @@ class Scientific_Notation_ConverterTests: XCTestCase {
         // which will change the text in decimalTF
         vc.baseEntered(vc.baseTF)
         
-        XCTAssert(vc.decimalTF.text == "789100")
+        XCTAssert(vc.decimalTF.text == "789,100")
         
         vc.baseTF.text = "1.234"
         vc.exponentTF.text = "2"
         vc.exponentEntered(vc.exponentTF) // baseEntered and exponentEntered work the same way
         
         XCTAssert(vc.decimalTF.text == "123.4")
+        
+        vc.baseTF.text = "1"
+        vc.exponentTF.text = "-16"
+        vc.exponentEntered(vc.exponentTF)
+        
+        XCTAssert(vc.decimalTF.text == "0.0000000000000001")
+        
+        vc.baseTF.text = "1.2345"
+        vc.exponentTF.text = "0"
+        vc.exponentEntered(vc.exponentTF)
+        
+        XCTAssert(vc.decimalTF.text == "1.2345")
     }
     
     func testClearButton() {
