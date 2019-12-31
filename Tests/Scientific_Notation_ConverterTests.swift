@@ -19,7 +19,9 @@ class Scientific_Notation_ConverterTests: XCTestCase {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         vc = (storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController)
-        vc.loadView()
+
+        // Call viewDidLoad in ViewController
+        let _ = vc.view
     }
     
     override func tearDown() {
