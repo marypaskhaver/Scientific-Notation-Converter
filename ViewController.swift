@@ -25,7 +25,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func exponentEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
+            Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
             Double(exponentTF.text!)! > 16 || Double(exponentTF.text!)! < -16 {
             
             return
@@ -37,8 +37,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func baseEntered(_ sender: UITextField) {
         if exponentTF.text!.isEmpty || exponentTF.text!.countInstances(of: "-") > 1 ||
             baseTF.text!.isEmpty || baseTF.text!.countInstances(of: ".") > 1 ||
-            !exponentTF.text!.isInt || Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
+            Double(baseTF.text!)! > 10 || Double(baseTF.text!)! < 1 ||
             Double(exponentTF.text!)! > 16 || Double(exponentTF.text!)! < -16 {
+            
             
             return
         }
@@ -53,28 +54,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let exponentString: String = exponentTF.text!
         let exponent: Double! = Double(exponentString)
         
-        if base == 0 {
-            baseTF.text = String(base)
+        let num: Double = (base * pow(10.0, exponent))
+        
+        if exponent == 0 {
+            decimalTF.text = baseString
             return
         }
         
-        let num: Double = (base * pow(10.0, exponent))
-        
-        
-        if exponent < 16 && exponent > -16 {
-            decimalTF.text = String(num)
-        } else {
-            decimalTF.text = num.toString()
-        }
-        
-        // If the number in decimalTF has a .0 at the end, drop the .0
-        if (Double(decimalTF.text!)!.truncatingRemainder(dividingBy: 1) == 0) {
-            decimalTF.text = String((decimalTF.text!.dropLast()))
-            decimalTF.text = String((decimalTF.text!.dropLast()))
-        }
-    
+        // Make sure small numbers are printed without scientific notation and with max. 16 fraction digits
+        let numberFormatter = NumberFormatter()
+        numberFormatter.maximumFractionDigits = 16
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let numString = numberFormatter.string(from: NSNumber(value: num))
+        decimalTF.text = numString!
     }
-    
     
     func convertDecimalToSciNo() {
         let stringDecimal: String = decimalTF.text!
@@ -146,19 +139,6 @@ extension Double {
         formatter.maximumFractionDigits = 16
         
         return Double(String(formatter.string(from: number) ?? "0"))!
-    }
-    
-    // Prints out full number, not Apple scientific notation (ex: 4e+16)
-    func toString(decimal: Int = 17) -> String {
-        let value = decimal < 0 ? 0 : decimal
-        var string = String(format: "%.\(value)f", self)
-
-        while string.last == "0" || string.last == "." {
-            if string.last == "." { string = String(string.dropLast()); break}
-            string = String(string.dropLast())
-        }
-        
-        return string
     }
 
 }
